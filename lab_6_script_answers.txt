@@ -1,0 +1,53 @@
+/** Q4 **/
+/** p1 **/
+CREATE TABLE IF NOT EXISTS Universities (
+  university_name TEXT NOT NULL,
+  date_established DATE,
+  address TEXT,
+  student_population INT,
+  accepted_rate DECIMAL,
+  PRIMARY KEY(university_name)
+);
+/** p2 **/
+
+INSERT INTO Universities(university_name, date_established, address, student_population, accepted_rate)
+/** Q5 **/
+/** p1 **/
+VALUES('CU Boulder', '1876-10-11', '1100 28th st, Boulder, Colorado', 35000, 80)
+/** p2 **/
+select name, major FROM football_players ORDER BY major;
+/** p3 **/
+select name, rushing_yards FROM football_players WHERE rushing_yards > 69 ORDER BY rushing_yards;
+/** p4 **/
+SELECT * FROM football_games WHERE visitor_score<home_score;
+/** p5 **/
+SELECT visitor_name, game_date FROM football_games WHERE game_date > 2018-8-1::date ORDER BY game_date;
+/** p6 **/
+SELECT AVG(home_score) FROM football_games;
+
+
+/** Q6 **/
+/** p1 **/
+CREATE VIEW winning_games AS 
+  SELECT COUNT(*) AS "Games Won" FROM football_games WHERE home_score>visitor_score;
+
+/** p2 **/
+CREATE VIEW played_games AS 
+  SELECT COUNT(*) AS "Games Played" FROM football_games;
+
+/** p3 **/
+SELECT 100 * "Games won" / "Games Played AS "Win Percentage" FROM winning_games CROSS JOIN 
+played_games;
+
+/** Q7 **/
+/** p1 **/
+CREATE VIEW cedric_vega_played AS 
+  SELECCT COUNT(*) AS "Cedric Vega Games Played" FROM football_games INNER JOIN football_players ON 
+football_players.id = ANY(football_games.players) WHERE football_players.id=1;
+
+SELECT * FROM cedric_vega_played
+
+/** p2 **/
+
+SELECT rushing_yards::DECIMAL / "Cedric Vega Played"::DECIMAL AS "Average Rushing Yards" FROM
+  football_players CROSS JOIN cedric_vega_played WHERE football_players.id=1;
